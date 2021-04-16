@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <label for="inputTelp">Harga Modal</label>
-                <input type="text" name="capitral_price" class="form-control money" value="<?= $inventory['capital_price']; ?>">
+                <input type="text" name="capital_price" class="form-control money" value="<?= $inventory['capital_price']; ?>">
             </div>
             <div class="row">
                 <div class="col">
@@ -52,6 +52,17 @@
                     <a class="ml-auto mt-1" type="button" data-toggle="modal" data-target="#addCategory">Tambah kategori</a>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="inputDeliveryType">Ongkos Kirim</label>
+                <select name="category_id" id="inputDeliveryType" class="custom-select">
+                    <?php foreach ($delivery_types as $type) : ?>
+                        <option <?= ($type['id'] == $inventory['delivery_cost_type']) ? 'selected' : ''; ?> value="<?= $type['id']; ?>">Rp. <?= number_format($type['cost'], 0, ',', '.'); ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <div class="text-right">
+                    <a class="ml-auto mt-1" type="button" data-toggle="modal" data-target="#addDeliveryType">Tambah kategori</a>
+                </div>
+            </div>
             <hr>
             <button type="submit" class="btn btn-primary btn-block">Ubah</button>
         </form>
@@ -78,6 +89,37 @@
                     <div class="form-group">
                         <label for="inputCategory">Unit</label>
                         <input type="text" name="unit" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Add Modal Develiry Type -->
+<div class="modal fade" id="addDeliveryType" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="<?= site_url('Delivery_type/add'); ?>" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Tambah Ongkos Kirim</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" name="redirect_url" value="<?= current_url() ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCategory">Ongkos</label>
+                        <input type="text" name="cost" class="form-control money" value="0">
                     </div>
                 </div>
                 <div class="modal-footer">

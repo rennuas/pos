@@ -54,7 +54,7 @@ class Inventories extends MY_Controller
         $this->load->library('form_validation');
         $this->form_validation->set_rules('product_name', 'Nama Produk', 'required|trim');
         $this->form_validation->set_rules('sale_price', 'Harga Jual', 'required|trim');
-        $this->form_validation->set_rules('retail_price', 'Harga Eceran', 'required|trim');
+        // $this->form_validation->set_rules('retail_price', 'Harga Eceran', 'required|trim');
         $this->form_validation->set_rules('stock', 'Stok', 'required|trim');
 
         if ($this->form_validation->run() == FALSE) {
@@ -63,6 +63,7 @@ class Inventories extends MY_Controller
                 'header' => 'Tambah Produk',
                 'content' => 'inventories/add',
                 'categories' => $this->Inventories->getCategories(),
+                'delivery_types' => $this->Inventories->getDeliveryTypes(),
                 'units' => $this->Inventories->getUnits()
             );
 
@@ -75,7 +76,7 @@ class Inventories extends MY_Controller
                 'sale_price' => str_replace('.', '', $post['sale_price']),
                 'capital_price' => str_replace('.', '', $post['capital_price']),
                 'stock' => $post['stock'],
-                'unit' => $post['unit'],
+                'unit_id' => $post['unit_id'],
                 'category_id' => $post['category_id'],
                 'date_created' => date('Y-m-d H:i:s'),
                 'last_updated' => date('Y-m-d H:i:s')
@@ -96,7 +97,7 @@ class Inventories extends MY_Controller
         $this->load->library('form_validation');
         $this->form_validation->set_rules('product_name', 'Nama Produk', 'required|trim');
         $this->form_validation->set_rules('sale_price', 'Harga Jual', 'required|trim');
-        $this->form_validation->set_rules('retail_price', 'Harga Eceran', 'required|trim');
+        // $this->form_validation->set_rules('retail_price', 'Harga Eceran', 'required|trim');
         $this->form_validation->set_rules('stock', 'Stok', 'required|trim');
 
         if ($this->form_validation->run() == FALSE) {
@@ -106,6 +107,7 @@ class Inventories extends MY_Controller
                 'content' => 'inventories/edit',
                 'inventory' => $this->Inventories->getInventory($id),
                 'categories' => $this->Inventories->getCategories(),
+                'delivery_types' => $this->Inventories->getDeliveryTypes(),
                 'units' => $this->Inventories->getUnits()
             );
 
@@ -118,7 +120,7 @@ class Inventories extends MY_Controller
                 'sale_price' => str_replace('.', '', $post['sale_price']),
                 'capital_price' => str_replace('.', '', $post['capital_price']),
                 'stock' => $post['stock'],
-                'unit' => $post['unit'],
+                'unit_id' => $post['unit_id'],
                 'category_id' => $post['category_id'],
                 'last_updated' => date('Y-m-d H:i:s')
             );
