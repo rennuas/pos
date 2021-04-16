@@ -5,6 +5,7 @@ class Inventories_model extends CI_Model
     private $_inventoryTbl = 'inventories';
     private $_categoryTbl = 'inventory_categories';
     private $_unitTbl = 'stock_unit';
+    private $_deliveryTypeTbl = 'delivery_cost_type';
     protected $column_order = array(null, 'product_name', 'sale_price', 'stock', 'unit', 'category');
     protected $column_search = array('product_name', 'sale_price', 'stock', 'unit', 'category');
     protected $order = array('inventories.id' => 'desc');
@@ -35,6 +36,12 @@ class Inventories_model extends CI_Model
     {
         $this->db->order_by('unit');
         return $this->db->get($this->_unitTbl)->result_array();
+    }
+
+    public function getDeliveryTypes()
+    {
+        $this->db->order_by('cost');
+        return $this->db->get($this->_deliveryTypeTbl)->result_array();
     }
 
     public function insert($data, $table)
