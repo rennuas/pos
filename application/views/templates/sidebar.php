@@ -29,6 +29,7 @@
                         <a class="collapse-item" href="<?= site_url('Inventories'); ?>">List</a>
                         <a class="collapse-item" href="<?= site_url('Inventory_categories'); ?>">Kategori</a>
                         <a class="collapse-item" href="<?= site_url('Stock_unit'); ?>">Unit</a>
+                        <a class="collapse-item" href="<?= site_url('Delivery_type'); ?>">Tipe Ongkos Kirim</a>
                     </div>
                 </div>
             </li>
