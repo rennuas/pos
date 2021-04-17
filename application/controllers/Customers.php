@@ -27,15 +27,17 @@ class Customers extends MY_Controller
         $no = $_POST['start'];
         $customers = array();
         foreach ($db as $field) {
-            $no++;
-            $row = array();
-            $row[] = $no;
-            $row[] = $field->name;
-            $row[] = $field->telp;
-            $row[] = $field->category;
-            $row[] = '<a href=' . site_url('Customers/edit/') . $field->customer_id . ' class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a> <a href=' . site_url('Customers/delete/') . $field->customer_id . ' class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin menghapus data? \');"><i class="fa fa-trash"></i></a>';
+            if ($field->category_id != '1') {
+                $no++;
+                $row = array();
+                $row[] = $no;
+                $row[] = $field->name;
+                $row[] = $field->telp;
+                $row[] = $field->category;
+                $row[] = '<a href=' . site_url('Customers/edit/') . $field->customer_id . ' class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a> <a href=' . site_url('Customers/delete/') . $field->customer_id . ' class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin menghapus data? \');"><i class="fa fa-trash"></i></a>';
 
-            $customers[] = $row;
+                $customers[] = $row;
+            }
         }
 
         $output = array(

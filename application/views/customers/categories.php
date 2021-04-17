@@ -14,14 +14,16 @@
                 <tbody>
                     <?php $no = 1;
                     foreach ($categories as $category) : ?>
-                        <tr>
-                            <td><?= $no++; ?></td>
-                            <td><?= $category['category']; ?></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editModal<?= $category['id']; ?>"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal<?= $category['id']; ?>"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        <?php if ($category['id'] != '1') : ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= $category['category']; ?></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editModal<?= $category['id']; ?>"><i class="fa fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal<?= $category['id']; ?>"><i class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>
