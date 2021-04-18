@@ -91,14 +91,13 @@ class Sales extends MY_Controller
         $insert = $this->Sales->insertTransaction($data, $data_batch);
 
         if ($insert) {
-            $_GET['info'] = $data;
-            $_GET['baskets'] = $data_batch;
             if ($post['print'] === "on") {
                 echo json_encode([
                     'error' => 'false',
                     'status' => 'success',
                     'message' => 'Transaksi Berhasil',
-                    'print' => 'true'
+                    'print' => 'true',
+                    'no_transaction' => $data['no_transaction']
                 ]);
             } else {
                 $this->session->set_flashdata('transaction_msg', '<div class="alert alert-success"> Transaksaksi Berhasil </div>');
@@ -135,9 +134,13 @@ class Sales extends MY_Controller
         $this->load->view('templates/index', $data);
     }
 
-    public function delete($id)
+    public function delete($no_transaction)
     {
-        $this->sales->deleteSale($id);
+        $query = $this->Sales->deleteSale($no_transaction);
+        if ($query) {
+            $this->session->set_flashdata('transaction_msg', '<div class="alert alert-success"> Transaksaksi berhasil dihapus </div>');
+        }
+        redirect('Sales/list');
     }
 
     public function getTransactions()
@@ -154,8 +157,13 @@ class Sales extends MY_Controller
             $row[] = $field->customer_name;
             $row[] = $this->_getPaymentMethod($field->payment_method);
             $row[] = 'Rp.' . number_format($field->total_payment, 0, ',', '.');
-            $row[] = $field->status;
-            $row[] = '<a href=' . site_url('Sales/details/') . $field->no_transaction . ' class="btn btn-sm btn-info"><i class="fa fa-list"></i></a> <a href=' . site_url('Sales/delete/') . $field->no_transaction . ' class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin menghapus data? \');"><i class="fa fa-trash"></i></a>';
+            $row[] = $this->_saleStatus($field->status);
+
+            if ($field->status == 'Hutang') {
+                $row[] = '<a href="' . site_url('Sales/details/') . $field->no_transaction . '" class="btn btn-sm btn-info"><i class="fa fa-list"></i></a> <a href="' . site_url('Sales/delete/') . $field->no_transaction . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin menghapus data? \');"><i class="fa fa-trash"></i></a><a href="' . site_url('Sales/payFull/') . $field->no_transaction . '" class="btn btn-sm btn-warning ml-2"><i class="fas fa-money-bill"></i></a>';
+            } else {
+                $row[] = '<a href=' . site_url('Sales/details/') . $field->no_transaction . ' class="btn btn-sm btn-info"><i class="fa fa-list"></i></a> <a href=' . site_url('Sales/delete/') . $field->no_transaction . ' class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin menghapus data? \');"><i class="fa fa-trash"></i></a>';
+            }
 
             $inventories[] = $row;
         }
@@ -189,16 +197,37 @@ class Sales extends MY_Controller
 
     public function print()
     {
-        // $info = $this->input->get('info');
-        // $baskets = $this->input->get('baskets');
+
+        $get = $this->input->get();
+
+        $sale = $this->Sales->getSale($get['no_transaction']);
+        $sale_details = $this->Sales->getSaleDetails($get['no_transaction']);
 
         $data = array(
             'title' => 'Rumah Faliesha',
-            // 'print_id' => $info['no_transaction'] . $info['customer_id'],
-            // 'info' => $info,
-            // 'baskets' => $baskets
+            'print_id' => $sale['no_transaction'] . $sale['customer_id'],
+            'sale' => $sale,
+            'sale_details' => $sale_details,
+            'redirect' => $get['redirect']
         );
 
         $this->load->view('print/index', $data);
+    }
+
+    public function payFull($no_transaction)
+    {
+        $query = $this->Sales->payFull($no_transaction);
+        if ($query) {
+            $this->session->set_flashdata('transaction_msg', '<div class="alert alert-success"> No Transaksi ' . $no_transaction . ' telah lunas </div>');
+        } else {
+            $this->session->set_flashdata('transaction_msg', '<div class="alert alert-danger"> No Transaksi ' . $no_transaction . ' gagal melakukan pelunasan </div>');
+        }
+        redirect('Sales/list');
+    }
+
+    private function _saleStatus($status)
+    {
+        if ($status == 'Hutang') return "<span class=\"text-danger\"> {$status} </span>";
+        return "<span class=\"text-success\"> {$status} </span>";
     }
 }

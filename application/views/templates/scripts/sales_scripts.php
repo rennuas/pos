@@ -103,10 +103,6 @@
 
         });
 
-        $('#save-button').click(function() {
-            console.log($('select'));
-        });
-
         $(document).on('keyup input', '#qty', function(e) {
             const charCode = e.which || e.keyCode;
             if (charCode != 8 && charCode <= 48 && charCode >= 57) return false;
@@ -314,7 +310,7 @@
                         alert(response.message);
                     } else {
                         if (response.print == 'true') {
-                            window.location.href = "<?= site_url('Sales/print'); ?>"
+                            window.location.href = "<?= site_url('Sales/print?no_transaction='); ?>" + response.no_transaction + "&redirect=" + "<?= current_url() ?>"
                         } else {
                             location.reload();
                         }

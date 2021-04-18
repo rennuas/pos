@@ -29,17 +29,17 @@
                     <div class="form-group mr-3">
                         <label for="inputCustomer" class="mr-3">Customer :</label>
                         <select name="customer_id" id="customers" class="custom-select">
-                            <option value="0">Umum</option>
+                            <option value="1">Umum</option>
                             <optgroup label="Belitung">
                                 <?php foreach ($customers as $customer) : ?>
-                                    <?php if ($customer->category_id == '1') : ?>
+                                    <?php if ($customer->category_id == '2') : ?>
                                         <option value="<?= $customer->customer_id; ?>"><?= $customer->name; ?></option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </optgroup>
                             <optgroup label="Reseller">
                                 <?php foreach ($customers as $customer) : ?>
-                                    <?php if ($customer->category_id == '2') : ?>
+                                    <?php if ($customer->category_id == '3') : ?>
                                         <option value="<?= $customer->customer_id; ?>"><?= $customer->name; ?></option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>

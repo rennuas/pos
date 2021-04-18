@@ -61,7 +61,7 @@
 <hr>
 <div class="row mt-3">
     <div class="col">
-        <a href="<?= site_url('Sales/print'); ?>" class="btn btn-success mb-3"><i class="fa fa-print"></i> Print</a>
+        <a href="<?= site_url('Sales/print?no_transaction=' . $sale['no_transaction'] . '&redirect=' . current_url()); ?>" class="btn btn-success mb-3"><i class="fa fa-print"></i> Print</a>
         <table class="table table-bordered table-hover">
             <thead class="bg-dark text-white">
                 <tr>

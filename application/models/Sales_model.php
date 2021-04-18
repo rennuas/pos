@@ -65,7 +65,7 @@ class Sales_model extends CI_Model
         $this->db->select("{$this->_saleDetailsTbl}.*, {$this->_productTbl}.product_name");
         $this->db->from($this->_saleDetailsTbl);
         $this->db->where("{$this->_saleDetailsTbl}.no_transaction", $no_transaction);
-        $this->db->join($this->_productTbl, "{$this->_saleDetailsTbl}.product_id={$this->_productTbl}.id");
+        $this->db->join($this->_productTbl, "{$this->_saleDetailsTbl}.product_id={$this->_productTbl}.id", "left");
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -97,8 +97,8 @@ class Sales_model extends CI_Model
     {
         $this->db->select("{$this->_salesTbl}.*, {$this->_customerTbl}.name as customer_name, {$this->_cashierTbl}.name as cashier_name");
         $this->db->from($this->_salesTbl);
-        $this->db->join($this->_customerTbl, "{$this->_customerTbl}.id={$this->_salesTbl}.customer_id");
-        $this->db->join($this->_cashierTbl, "{$this->_cashierTbl}.id={$this->_salesTbl}.user_id");
+        $this->db->join($this->_customerTbl, "{$this->_customerTbl}.id={$this->_salesTbl}.customer_id", "left");
+        $this->db->join($this->_cashierTbl, "{$this->_cashierTbl}.id={$this->_salesTbl}.user_id", "left");
 
         $i = 0;
 
@@ -127,5 +127,34 @@ class Sales_model extends CI_Model
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
+    }
+
+    public function payFull($no_transaction)
+    {
+
+        $this->db->trans_start();
+
+        $transaction = $this->db->get_where($this->_salesTbl, ['no_transaction' => $no_transaction])->row_array();
+
+        $data = array(
+            'amounted_payment' => $transaction['total_payment'],
+            'change_payment' => 0,
+            'status' => 'Lunas',
+        );
+
+        $this->db->update($this->_salesTbl, $data, ['no_transaction' => $no_transaction]);
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+
+    public function deleteSale($no_transaction)
+    {
+        return $this->db->delete($this->_salesTbl, ['no_transaction' => $no_transaction]);
     }
 }

@@ -21,6 +21,9 @@
     <!-- Custom scripts for all pages-->
     <script src="<?= base_url('assets/sbadmin2/'); ?>js/sb-admin-2.min.js"></script>
 
+    <!-- Chart.js -->
+    <script src="<?= base_url('assets/sbadmin2/'); ?>vendor/chart.js/Chart.min.js"></script>
+
     <!-- My Scripts -->
     <script src="<?= base_url('assets/js/'); ?>main.js"></script>
 
@@ -28,6 +31,10 @@
 
     <?php if (strtolower($this->uri->segment(1)) == 'sales') : ?>
         <?php $this->load->view('templates/scripts/sales_scripts'); ?>
+    <?php endif; ?>
+
+    <?php if (strtolower($this->uri->segment(1)) == 'dashboard') : ?>
+        <?php $this->load->view('templates/scripts/dashboard_charts'); ?>
     <?php endif; ?>
 
     <script>
