@@ -87,19 +87,20 @@ class Dashboard_model extends CI_Model
 
         $gross_income = array();
         foreach ($date_list as $date) {
+
+            $data = array(
+                'date' => $date,
+                'gross_income' => 0
+            );
+
             foreach ($sales as $sale) {
                 if ($sale['date'] == $date) {
                     $data = array(
                         'date' => $sale['date'],
                         'gross_income' => $sale['gross_income']
                     );
-                    break;
-                } else {
-                    $data = array(
-                        'date' => $date,
-                        'gross_income' => 0
-                    );
                 }
+                break;
             }
             array_push($gross_income, $data);
         }
@@ -120,19 +121,20 @@ class Dashboard_model extends CI_Model
 
         $gross_income = array();
         foreach ($month_list as $month) {
+
+            $data = array(
+                'month' => $month,
+                'gross_income' => 0
+            );
+
             foreach ($sales as $sale) {
                 if ($sale['month'] == $month) {
                     $data = array(
                         'month' => $sale['month'],
                         'gross_income' => intval($sale['gross_income'])
                     );
-                    break;
-                } else {
-                    $data = array(
-                        'month' => $month,
-                        'gross_income' => 0
-                    );
                 }
+                break;
             }
             array_push($gross_income, $data);
         }
@@ -154,19 +156,20 @@ class Dashboard_model extends CI_Model
 
         $gross_income = array();
         foreach ($year_list as $year) {
+
+            $data = array(
+                'year' => $year,
+                'gross_income' => 0
+            );
+
             foreach ($sales as $sale) {
                 if ($sale['year'] == $year) {
                     $data = array(
                         'year' => $sale['year'],
                         'gross_income' => $sale['gross_income']
                     );
-                    break;
-                } else {
-                    $data = array(
-                        'year' => $year,
-                        'gross_income' => 0
-                    );
                 }
+                break;
             }
             array_push($gross_income, $data);
         }
