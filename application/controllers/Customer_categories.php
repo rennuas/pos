@@ -8,6 +8,7 @@ class Customer_categories extends MY_Controller
         parent::__construct();
         $this->is_logged();
         $this->load->model('Customers_model', 'Customers');
+        show_404();
     }
 
     public function index()

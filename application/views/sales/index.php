@@ -136,7 +136,9 @@
                             <label for="inputCategory">Kategori</label>
                             <select name="category_id" id="inputCategory" class="custom-select">
                                 <?php foreach ($customer_categories as $category) : ?>
-                                    <option value="<?= $category['id']; ?>"><?= $category['category']; ?></option>
+                                    <?php if ($category['id'] != 1) : ?>
+                                        <option value="<?= $category['id']; ?>"><?= $category['category']; ?></option>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>
