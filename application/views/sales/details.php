@@ -1,4 +1,9 @@
 <div class="row">
+    <div class="col">
+        <a href=" <?= site_url('Sales/list'); ?>" class="btn btn-secondary mb-3"><i class="fa fa-arrow-left"></i> Kembali</a>
+    </div>
+</div>
+<div class="row">
     <div class="col-4">
         <table>
             <tr>
