@@ -143,6 +143,15 @@ class Sales extends MY_Controller
         redirect('Sales/list');
     }
 
+    public function getDeliveryCost()
+    {
+        $post = $this->input->post();
+
+        $query = $this->Sales->getDeliveryCost($post['cost_type_id']);
+
+        echo json_encode($query);
+    }
+
     public function getTransactions()
     {
         $db = $this->Sales->getTransactions();

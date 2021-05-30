@@ -8,6 +8,7 @@ class Sales_model extends CI_Model
     private $_customerTbl = 'customers';
     private $_cashierTbl = 'user_login';
     private $_productTbl = 'inventories';
+    private $_deliveryCostTypeTbl = 'delivery_cost_type';
     protected $column_order = array(
         'datetime',
         'no_transaction',
@@ -78,6 +79,13 @@ class Sales_model extends CI_Model
         }
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function getDeliveryCost($id)
+    {
+        $query = $this->db->get_where($this->_deliveryCostTypeTbl, ['id' => $id]);
+
+        return $query->row();
     }
 
     public function countFiltered()

@@ -51,8 +51,6 @@
             $('#sales-table tbody tr').each(function() {
                 $(this).find('td:nth-child(2) input').focus();
             });
-
-            console.log(decodeURI($('#sales-table tbody input').serialize()));
         }
 
         function CountTotalPayment() {
@@ -222,13 +220,29 @@
             return customer;
         }
 
-        function CalculateCost(cost_type = null, customer_category) {
-            if (customer_category == '1') {
-                if (cost_type == '1') return 5000;
-                if (cost_type == '2') return 10000;
-                return 5000;
-            } else if (customer_category == '2') {
-                return -5000;
+        function getDeliveryCost(costTypeId) {
+            let cost;
+            $.ajax({
+                url: "<?= site_url('Sales/getDeliveryCost') ?>",
+                method: "POST",
+                dataType: "json",
+                data: {
+                    cost_type_id: costTypeId
+                },
+                async: false,
+                success: function(response) {
+                    cost = response.cost;
+                },
+                error: function(error) {
+                    cost = 0;
+                }
+            });
+            return parseInt(cost)
+        }
+
+        function CalculateCost(costTypeId = null, customerCategoryId) {
+            if (customerCategoryId == '2') {
+                return getDeliveryCost(costTypeId);
             } else {
                 return 0;
             }
@@ -239,8 +253,8 @@
             $('#sales-table tbody tr').each(function() {
                 let price = parseInt($(this).find('td:nth-child(3) input#price').val());
                 let qty = parseInt($(this).find('td:nth-child(4) input#qty').val());
-                let costType = $(this).find('td:nth-child(3) input#cost-type').val()
-                let cost = CalculateCost(costType, customer.category_id);
+                let costTypeId = $(this).find('td:nth-child(3) input#cost-type').val()
+                let cost = CalculateCost(costTypeId, customer.category_id);
                 let inputCost = $(this).find('td:nth-child(3) input#cost');
                 let spanTotalPrice = $(this).find('td:nth-child(3) span');
                 let inputSubTotal = $(this).find('td:nth-child(5) input#sub-total');
@@ -251,8 +265,6 @@
                 spanTotalPrice.html(toRupiah(totalPrice));
                 inputSubTotal.val(subTotal);
                 spanSubTotal.html(toRupiah(subTotal));
-                console.log(price);
-                console.log(costType);
             })
         }
 
