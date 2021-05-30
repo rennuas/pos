@@ -54,7 +54,7 @@
             </div>
             <div class="form-group">
                 <label for="inputDeliveryType">Ongkos Kirim</label>
-                <select name="category_id" id="inputDeliveryType" class="custom-select">
+                <select name="delivery_type" id="inputDeliveryType" class="custom-select">
                     <?php foreach ($delivery_types as $type) : ?>
                         <option <?= ($type['id'] == $inventory['delivery_cost_type']) ? 'selected' : ''; ?> value="<?= $type['id']; ?>">Rp. <?= number_format($type['cost'], 0, ',', '.'); ?></option>
                     <?php endforeach; ?>

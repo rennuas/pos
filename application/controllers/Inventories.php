@@ -54,7 +54,6 @@ class Inventories extends MY_Controller
         $this->load->library('form_validation');
         $this->form_validation->set_rules('product_name', 'Nama Produk', 'required|trim');
         $this->form_validation->set_rules('sale_price', 'Harga Jual', 'required|trim');
-        // $this->form_validation->set_rules('retail_price', 'Harga Eceran', 'required|trim');
         $this->form_validation->set_rules('stock', 'Stok', 'required|trim');
 
         if ($this->form_validation->run() == FALSE) {
@@ -79,7 +78,8 @@ class Inventories extends MY_Controller
                 'unit_id' => $post['unit_id'],
                 'category_id' => $post['category_id'],
                 'date_created' => date('Y-m-d H:i:s'),
-                'last_updated' => date('Y-m-d H:i:s')
+                'last_updated' => date('Y-m-d H:i:s'),
+                'delivery_cost_type' => $post['delivery_type']
             );
 
             $query = $this->Inventories->insert($data, 'inventories');
@@ -97,7 +97,6 @@ class Inventories extends MY_Controller
         $this->load->library('form_validation');
         $this->form_validation->set_rules('product_name', 'Nama Produk', 'required|trim');
         $this->form_validation->set_rules('sale_price', 'Harga Jual', 'required|trim');
-        // $this->form_validation->set_rules('retail_price', 'Harga Eceran', 'required|trim');
         $this->form_validation->set_rules('stock', 'Stok', 'required|trim');
 
         if ($this->form_validation->run() == FALSE) {
@@ -122,7 +121,8 @@ class Inventories extends MY_Controller
                 'stock' => $post['stock'],
                 'unit_id' => $post['unit_id'],
                 'category_id' => $post['category_id'],
-                'last_updated' => date('Y-m-d H:i:s')
+                'last_updated' => date('Y-m-d H:i:s'),
+                'delivery_cost_type' => $post['delivery_type']
             );
 
             $query = $this->Inventories->update($id, $data, 'inventories');
