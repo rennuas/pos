@@ -78,10 +78,11 @@ class Sales extends MY_Controller
 
         $data_batch = array();
         for ($i = 0; $i < count($post['product_id']); $i++) {
+            $extra_price = $post['extra_price'][$i] == '' ? 0 : $post['extra_price'][$i];
             $row = array(
                 'no_transaction' => $post['no_transaction'],
                 'product_id'     => $post['product_id'][$i],
-                'price'          => $post['price'][$i] + $post['extra_price'][$i],
+                'price'          => $post['price'][$i] + $extra_price,
                 'qty'            => $post['qty'][$i],
                 'subtotal'      => $post['sub_total'][$i]
             );

@@ -38,7 +38,7 @@
             row += "<input type='hidden' id='cost-type' name='cost_type' value='" + cost_type + "'>";
             row += "<span>" + toRupiah(price + cost) + "</span>";
             row += "</td>";
-            row += "<td><input type='extra_price' min='0' class='form-control' id='extra_price' name='extra_price[]' value='0'></td>";
+            row += "<td><input type='number' min='0' class='form-control' id='extra_price' name='extra_price[]' value='0'></td>";
             row += "<td><input type='number' min='1' class='form-control' id='qty' name='qty[]' value='1'></td>";
             row += "<td>";
             row += "<input type='hidden' id='sub-total' name='sub_total[]' value='" + (price + cost) * qty + "'>";
@@ -356,6 +356,8 @@
             data += '&info=' + encodeURI($('#info').val());
             data += '&print=' + encodeURI($('#print-invoice:checked').val());
             data += '&' + $('#sales-table tbody input').serialize();
+
+            console.table($('#sales-table tbody input').serialize());
 
             $.ajax({
                 url: "<?= site_url('Sales/save'); ?>",
