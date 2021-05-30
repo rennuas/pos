@@ -53,9 +53,10 @@
                         <tr>
                             <th width="50px">No</th>
                             <th width="400px">Nama Barang</th>
-                            <th width="225px">Harga</th>
-                            <th width="50px">Qty</th>
-                            <th width="225px">Subtotal</th>
+                            <th>Harga</th>
+                            <th>Tambahan/Pengurangan Harga</th>
+                            <th width="100px">Qty</th>
+                            <th>Subtotal</th>
                             <th width="50px"></th>
                         </tr>
                     </thead>

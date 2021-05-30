@@ -38,6 +38,7 @@
             row += "<input type='hidden' id='cost-type' name='cost_type' value='" + cost_type + "'>";
             row += "<span>" + toRupiah(price + cost) + "</span>";
             row += "</td>";
+            row += "<td><input type='extra_price' min='0' class='form-control' id='extra_price' name='extra_price[]' value='0'></td>";
             row += "<td><input type='number' min='1' class='form-control' id='qty' name='qty[]' value='1'></td>";
             row += "<td>";
             row += "<input type='hidden' id='sub-total' name='sub_total[]' value='" + (price + cost) * qty + "'>";
@@ -56,7 +57,7 @@
         function CountTotalPayment() {
             let total = 0;
             $('#sales-table tbody tr').each(function() {
-                let subTotal = $(this).find('td:nth-child(5) input').val();
+                let subTotal = $(this).find('td:nth-child(6) input').val();
                 total += parseInt(subTotal);
             });
             $('#total-payment h2').html('Total: ' + toRupiah(total));
@@ -101,14 +102,48 @@
 
         });
 
+        $(document).on('keyup input', '#extra_price', function(e) {
+            const charCode = e.which || e.keyCode;
+            if (charCode != 8 && charCode <= 48 && charCode >= 57) return false;
+
+            const extraPrice = parseInt($(this).val());
+            const qty = $(this).parent().parent().find('td:nth-child(5) input').val();
+            const id = $(this).parent().parent().find('td:first-child() input').val();
+            const subTotalInput = $(this).parent().parent().find('td:nth-child(6) input');
+            const subTotalSpan = $(this).parent().parent().find('td:nth-child(6) span');
+            const priceInput = $(this).parent().parent().find('td:nth-child(3) input');
+            const priceSpan = $(this).parent().parent().find('td:nth-child(3) span');
+            const price = parseInt($(priceInput).val());
+
+            const customer = GetCustomer();
+            const costType = $(this).parent().parent().find('td:nth-child(3) input#cost-type').val()
+            const cost = CalculateCost(costType, customer.category_id);
+            let subTotal = 0;
+
+            if (!isNaN(extraPrice)) {
+                subTotal = (price + cost + extraPrice) * qty;
+                subTotalInput.val(subTotal);
+                subTotalSpan.html(toRupiah(subTotal));
+            } else {
+                subTotal = (price + cost + 0) * qty;
+                subTotalInput.val(subTotal);
+                subTotalSpan.html(toRupiah(subTotal));
+            }
+
+            CountTotalPayment();
+            CountAmountedPayment();
+
+        });
+
         $(document).on('keyup input', '#qty', function(e) {
             const charCode = e.which || e.keyCode;
             if (charCode != 8 && charCode <= 48 && charCode >= 57) return false;
 
             const qty = parseInt($(this).val());
             const id = $(this).parent().parent().find('td:first-child() input').val();
-            const subTotalInput = $(this).parent().parent().find('td:nth-child(5) input');
-            const subTotalSpan = $(this).parent().parent().find('td:nth-child(5) span');
+            const extraPrice = parseInt($(this).parent().parent().find('td:nth-child(4) input').val());
+            const subTotalInput = $(this).parent().parent().find('td:nth-child(6) input');
+            const subTotalSpan = $(this).parent().parent().find('td:nth-child(6) span');
             const priceInput = $(this).parent().parent().find('td:nth-child(3) input');
             const priceSpan = $(this).parent().parent().find('td:nth-child(3) span');
             const price = parseInt($(priceInput).val());
@@ -136,7 +171,7 @@
                     const costType = $(this).parent().parent().find('td:nth-child(3) input#cost-type').val()
                     const cost = CalculateCost(costType, customer.category_id);
                     let subTotal = 0;
-                    subTotal = (price + cost) * qty;
+                    subTotal = (price + cost + extraPrice) * qty;
                     subTotalInput.val(subTotal);
                     subTotalSpan.html(toRupiah(subTotal));
                 }
@@ -251,17 +286,20 @@
         function UpdateRow() {
             const customer = GetCustomer();
             $('#sales-table tbody tr').each(function() {
+                let extraPrice = parseInt($(this).find('td:nth-child(4) input#extra_price').val());
                 let price = parseInt($(this).find('td:nth-child(3) input#price').val());
-                let qty = parseInt($(this).find('td:nth-child(4) input#qty').val());
+                let qty = parseInt($(this).find('td:nth-child(5) input#qty').val());
                 let costTypeId = $(this).find('td:nth-child(3) input#cost-type').val()
                 let cost = CalculateCost(costTypeId, customer.category_id);
                 let inputCost = $(this).find('td:nth-child(3) input#cost');
                 let spanTotalPrice = $(this).find('td:nth-child(3) span');
-                let inputSubTotal = $(this).find('td:nth-child(5) input#sub-total');
-                let spanSubTotal = $(this).find('td:nth-child(5) span');
+                let inputSubTotal = $(this).find('td:nth-child(6) input#sub-total');
+                let spanSubTotal = $(this).find('td:nth-child(6) span');
+                let inputExtraPrice = $(this).find('td:nth-child(4) input#extra_price');
                 let totalPrice = price + cost;
-                let subTotal = totalPrice * qty;
+                let subTotal = (totalPrice + extraPrice) * qty;
                 inputCost.val(cost);
+                inputExtraPrice.val(extraPrice);
                 spanTotalPrice.html(toRupiah(totalPrice));
                 inputSubTotal.val(subTotal);
                 spanSubTotal.html(toRupiah(subTotal));

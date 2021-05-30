@@ -81,7 +81,7 @@ class Sales extends MY_Controller
             $row = array(
                 'no_transaction' => $post['no_transaction'],
                 'product_id'     => $post['product_id'][$i],
-                'price'          => $post['price'][$i],
+                'price'          => $post['price'][$i] + $post['extra_price'][$i],
                 'qty'            => $post['qty'][$i],
                 'subtotal'      => $post['sub_total'][$i]
             );
