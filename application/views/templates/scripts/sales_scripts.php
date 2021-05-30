@@ -108,7 +108,6 @@
 
             const extraPrice = parseInt($(this).val());
             const qty = $(this).parent().parent().find('td:nth-child(5) input').val();
-            const id = $(this).parent().parent().find('td:first-child() input').val();
             const subTotalInput = $(this).parent().parent().find('td:nth-child(6) input');
             const subTotalSpan = $(this).parent().parent().find('td:nth-child(6) span');
             const priceInput = $(this).parent().parent().find('td:nth-child(3) input');
@@ -139,8 +138,9 @@
             const charCode = e.which || e.keyCode;
             if (charCode != 8 && charCode <= 48 && charCode >= 57) return false;
 
-            const qty = parseInt($(this).val());
-            const id = $(this).parent().parent().find('td:first-child() input').val();
+            const qtyInput = $(this);
+            let qty = parseInt($(this).val());
+            const id = $(this).parent().parent().find('td:nth-child(2) input').val();
             const extraPrice = parseInt($(this).parent().parent().find('td:nth-child(4) input').val());
             const subTotalInput = $(this).parent().parent().find('td:nth-child(6) input');
             const subTotalSpan = $(this).parent().parent().find('td:nth-child(6) span');
@@ -148,6 +148,7 @@
             const priceSpan = $(this).parent().parent().find('td:nth-child(3) span');
             const price = parseInt($(priceInput).val());
 
+            console.log(id);
             if ($(this).val() != '') {
                 const reg = new RegExp('^[0-9]+$');
 
@@ -158,11 +159,17 @@
                     data: {
                         id: id
                     },
+                    async: false,
                     success: function(data) {
                         if (data.stock < qty) {
+                            qtyInput.val(data.stock);
+                            qty = data.stock;
                             alert('STOK TIDAK MENCUKUPI !! \nStok tersisa : ' + data.stock);
                         }
-                        e.preventDefault();
+                        // e.preventDefault();
+                    },
+                    error: function(error) {
+                        console.error(error);
                     }
                 })
 
