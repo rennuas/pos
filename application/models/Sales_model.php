@@ -146,7 +146,7 @@ class Sales_model extends CI_Model
 
         $data = array(
             'amounted_payment' => $transaction['total_payment'],
-            'change_payment' => 0,
+            'change_money' => 0,
             'status' => 'Lunas',
         );
 
